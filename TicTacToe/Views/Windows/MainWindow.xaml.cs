@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace TicTacToe
+namespace TicTacToe.Views.Windows
 {
     public partial class MainWindow : Window
     {
