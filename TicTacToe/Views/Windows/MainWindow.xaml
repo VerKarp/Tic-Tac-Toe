@@ -9,7 +9,11 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding CloseApplicationCommand}"/>
+    </Window.InputBindings>
 
     <Grid>
+
     </Grid>
 </Window>
