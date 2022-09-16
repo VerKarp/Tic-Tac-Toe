@@ -1,11 +1,23 @@
 ﻿using TicTacToe.Models.Enums;
+using TicTacToe.ViewModels.Base;
 
 namespace TicTacToe.Models
 {
-    internal class Cell
+    internal class Cell : ViewModel
     {
-        public CellState State { get; set; }
-        public bool Winner { get; set; }
+        private CellState _state;
+        public CellState State 
+        { 
+            get => _state; 
+            set => Set(ref _state, value); 
+        }
+
+        private bool _winner;
+        public bool Winner 
+        { 
+            get => _winner; 
+            set => Set(ref _winner, value); 
+        }
 
         public Cell()
         {
