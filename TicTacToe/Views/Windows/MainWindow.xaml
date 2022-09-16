@@ -6,7 +6,8 @@
         xmlns:vm="clr-namespace:TicTacToe.ViewModels"
         xmlns:model="clr-namespace:TicTacToe.Models"
         xmlns:local="clr-namespace:TicTacToe"
-        Title="{Binding Title}" Height="450" Width="400">
+        Title="{Binding Title}" Height="450" Width="400"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -20,8 +21,22 @@
             <RowDefinition Height="11*"/>
         </Grid.RowDefinitions>
 
-        <Menu>
+        <Menu FontSize="18">
             <MenuItem Header="New game" Command="{Binding NewGameCommand}"/>
+            <MenuItem Header="Size">
+                <MenuItem Header="3X3" Command="{Binding ChangeGameBoardSizeCommand}"
+                          CommandParameter="3"/>
+                <MenuItem Header="4X4" Command="{Binding ChangeGameBoardSizeCommand}"
+                          CommandParameter="4"/>
+                <MenuItem Header="5X5" Command="{Binding ChangeGameBoardSizeCommand}"
+                          CommandParameter="5"/>
+            </MenuItem>
+            <MenuItem Header="Game mode">
+                <MenuItem Header="Person"/>
+                <MenuItem Header="Easy Bot"/>
+                <MenuItem Header="Medium Bot"/>
+                <MenuItem Header="Hard Bot"/>
+            </MenuItem>
         </Menu>
 
         <ItemsControl Grid.Row="1" DataContext="{Binding Board}"

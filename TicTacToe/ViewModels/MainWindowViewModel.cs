@@ -52,7 +52,10 @@ namespace TicTacToe.ViewModels
 
 
 		public ICommand NewGameCommand { get; }
-		private void OnNewGameCommandExecute(object p) => Board = new(3);
+		private void OnNewGameCommandExecute(object p) => Board = new(Board.Size);
+
+        public ICommand ChangeGameBoardSizeCommand { get; }
+        private void OnChangeGameBoardSizeCommandExecute(object p) => NewGameCommand.Execute(Board.Size = Convert.ToInt32(p));
 
         #endregion
 
@@ -103,6 +106,7 @@ namespace TicTacToe.ViewModels
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecute);
 			NewGameCommand = new LambdaCommand(OnNewGameCommandExecute);
             GameBoardClickCommand = new LambdaCommand(OnGameBoardClickCommandExecute, CanGameBoardClickCommandExecuted);
+            ChangeGameBoardSizeCommand = new LambdaCommand(OnChangeGameBoardSizeCommandExecute);
 		}
 
     }
