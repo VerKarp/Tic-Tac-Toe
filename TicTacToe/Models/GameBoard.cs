@@ -37,5 +37,7 @@ namespace TicTacToe.Models
 
             Cells = arena;
         }
+
+        public GameBoard() { }
     }
 }

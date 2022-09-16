@@ -5,6 +5,7 @@
         TicWon,
         TieWon,
         Toe,
-        GameOn
+        GameOn,
+        GameOff
     }
 }
