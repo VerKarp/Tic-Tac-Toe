@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TicTacToe.ViewModels"
+        xmlns:model="clr-namespace:TicTacToe.Models"
         xmlns:local="clr-namespace:TicTacToe"
-        Title="{Binding Title}" Height="450" Width="800">
+        Title="{Binding Title}" Height="450" Width="400">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -14,6 +15,97 @@
     </Window.InputBindings>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="11*"/>
+        </Grid.RowDefinitions>
 
+        <Menu>
+            <MenuItem Header="New game" Command="{Binding NewGameCommand}"/>
+        </Menu>
+
+        <ItemsControl Grid.Row="1" DataContext="{Binding Board}"
+                      ItemsSource="{Binding Cells}"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="False">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+
+                    <ItemsControl ItemsSource="{Binding}" Focusable="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+
+                                <Button Command="{Binding DataContext.AreaCommand,
+                        RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}">
+
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="BorderBrush" Value="Black"/>
+                                                <Setter Property="Background" Value="GhostWhite"/>
+                                                <Setter Property="BorderThickness" Value="1"/>
+                                                <Setter Property="Margin" Value="2"/>
+                                                <Setter Property="Height" Value="110"/>
+                                                <Setter Property="Width" Value="110"/>
+
+                                                <Style.Triggers>
+
+                                                    <DataTrigger Binding="{Binding Winner}" Value="true">
+                                                        <Setter Property="Background" Value="Green"/>
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding State}" Value="Cross">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}" 
+                                                            Background="{TemplateBinding Background}"
+                                                            Margin="{TemplateBinding Margin}">
+                                                                        <Path Data="{StaticResource CrossGeo}" 
+                                                              Stroke="Black" 
+                                                              Stretch="Uniform" StrokeThickness="3"/>
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding State}" Value="Zero">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}" 
+                                                            Background="{TemplateBinding Background}"
+                                                            Margin="{TemplateBinding Margin}">
+                                                                        <Path Data="{StaticResource NoughtGeo}" 
+                                                              Stroke="Black"
+                                                              Stretch="Uniform" StrokeThickness="3"/>
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+
+                                    </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+                    
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
     </Grid>
 </Window>
