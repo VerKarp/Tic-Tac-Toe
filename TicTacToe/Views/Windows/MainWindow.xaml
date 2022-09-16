@@ -40,7 +40,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
 
-                                <Button Command="{Binding DataContext.AreaCommand,
+                                <Button Command="{Binding DataContext.GameBoardClickCommand,
                         RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding}">
 
