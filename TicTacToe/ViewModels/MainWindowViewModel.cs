@@ -20,7 +20,7 @@ namespace TicTacToe.ViewModels
     {
         WindowDialogService _dialog = new();
 
-        private CellState _turn;
+        private CellState _turn = CellState.NotPressed;
 
         private bool _isGameOn;
         public bool IsGameOn
@@ -56,7 +56,7 @@ namespace TicTacToe.ViewModels
 
         #endregion
 
-        private GameBoard _gameBoard;
+        private GameBoard _gameBoard = new(3);
 		public GameBoard Board
 		{
 			get => _gameBoard;
@@ -88,20 +88,18 @@ namespace TicTacToe.ViewModels
                 IsGameOn = false;
 
                 if (win == CellState.Empty)
-                    _dialog.ShowInformation("Ничья!");
+                    _dialog.ShowInformation("Toe...");
 
                 if (win == CellState.Cross)
-                    _dialog.ShowInformation("Выиграл X");
+                    _dialog.ShowInformation("TIC!");
 
                 if (win == CellState.Zero)
-                    _dialog.ShowInformation("Выиграл 0");
+                    _dialog.ShowInformation("TAC!");
             }
         }
 
         public MainWindowViewModel()
 		{
-            Board = new(3);
-
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecute);
 			NewGameCommand = new LambdaCommand(OnNewGameCommandExecute);
             GameBoardClickCommand = new LambdaCommand(OnGameBoardClickCommandExecute, CanGameBoardClickCommandExecuted);

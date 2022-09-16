@@ -55,11 +55,11 @@
 
                                                 <Style.Triggers>
 
-                                                    <DataTrigger Binding="{Binding Winner}" Value="true">
+                                                <DataTrigger Binding="{Binding Winner}" Value="true">
                                                         <Setter Property="Background" Value="Green"/>
                                                     </DataTrigger>
 
-                                                    <DataTrigger Binding="{Binding State}" Value="Cross">
+                                                <DataTrigger Binding="{Binding State}" Value="Cross">
                                                         <Setter Property="Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate TargetType="Button">
