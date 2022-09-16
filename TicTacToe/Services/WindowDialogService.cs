@@ -5,7 +5,7 @@ namespace TicTacToe.Services
 {
     internal class WindowDialogService : IWindowDialogService
     {
-        public void ShowInformation(string Information, string Caption = "Результат игры") =>
+        public void ShowInformation(string Information, string Caption = "Game result") =>
             MessageBox.Show(
                 Information,
                 Caption,
