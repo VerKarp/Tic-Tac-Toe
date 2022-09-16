@@ -1,4 +1,5 @@
-﻿using TicTacToe.Models.Enums;
+﻿using System.Collections.Generic;
+using TicTacToe.Models.Enums;
 
 namespace TicTacToe.Models
 {
@@ -170,6 +171,17 @@ namespace TicTacToe.Models
             }
 
             return false;
+        }
+
+        #endregion
+
+        #region BOTS
+
+        public static void Bot(List<List<Cell>> cells, int size, CellState state, int depth)
+        {
+            _ = MinimaxBot.Minimax(cells, size, state, depth);
+
+            cells[MinimaxBot.X][MinimaxBot.Y].State = CellState.Zero;
         }
 
         #endregion
