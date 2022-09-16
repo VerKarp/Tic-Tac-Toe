@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TicTacToe.Models.Enums;
+﻿using TicTacToe.Models.Enums;
 
 namespace TicTacToe.Models
 {
     internal class Cell
     {
         public CellState State { get; set; }
+        public bool Winner { get; set; }
+
+        public Cell()
+        {
+            State = CellState.NotPressed;
+            Winner = false;
+        }
     }
 }
