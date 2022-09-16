@@ -7,7 +7,8 @@
         xmlns:model="clr-namespace:TicTacToe.Models"
         xmlns:local="clr-namespace:TicTacToe"
         Title="{Binding Title}" Height="450" Width="400"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -28,20 +29,23 @@
                           CommandParameter="3"/>
                 <MenuItem Header="4X4" Command="{Binding ChangeGameBoardSizeCommand}"
                           CommandParameter="4"/>
-                <MenuItem Header="5X5" Command="{Binding ChangeGameBoardSizeCommand}"
-                          CommandParameter="5"/>
             </MenuItem>
             <MenuItem Header="Game mode">
-                <MenuItem Header="Person"/>
-                <MenuItem Header="Easy Bot"/>
-                <MenuItem Header="Medium Bot"/>
-                <MenuItem Header="Hard Bot"/>
+                <MenuItem Header="Person" Command="{Binding ChangeGameModeCommand}"
+                          CommandParameter="0"/>
+                <MenuItem Header="Easy Bot" Command="{Binding ChangeGameModeCommand}"
+                          CommandParameter="1"/>
+                <MenuItem Header="Medium Bot" Command="{Binding ChangeGameModeCommand}"
+                          CommandParameter="2"/>
+                <MenuItem Header="Hard Bot" Command="{Binding ChangeGameModeCommand}"
+                          CommandParameter="3"/>
             </MenuItem>
         </Menu>
 
         <ItemsControl Grid.Row="1" DataContext="{Binding Board}"
                       ItemsSource="{Binding Cells}"
-                      HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="False">
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="False"
+                      Margin="10">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
 
