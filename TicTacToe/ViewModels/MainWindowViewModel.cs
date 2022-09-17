@@ -18,46 +18,82 @@ namespace TicTacToe.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        private GameMode _gameMode = GameMode.Player;
+        #region Fields
 
-        WindowDialogService _dialog = new();
+        private GameMode _gameMode = GameMode.Player;
 
         private CellState _turn = CellState.Cross;
 
-        private bool _isGameOn;
-        public bool IsGameOn
-        {
-            get => _isGameOn;
-            set
-            {
-                _isGameOn = value;
-                OnPropertyChanged();
-            }
-        }
+        private WindowDialogService _dialog = new();
+
+        #endregion
+
+        #region Properties
 
         #region Title
 
         private string _title = "Tic-Tac-Toe";
 
-		public string Title
-		{
-			get => _title;
-			set => Set(ref _title, value);
-		}
+        public string Title
+        {
+            get => _title;
+            set => Set(ref _title, value);
+        }
+
+        #endregion
+
+        #region GameBoard - Board
+
+        private GameBoard _gameBoard = new(3);
+        public GameBoard Board
+        {
+            get => _gameBoard;
+            set => Set(ref _gameBoard, value);
+        }
+
+        #endregion
+
+        #region int - Depth
+
+        public int Depth { get; set; }
+
+        #endregion
+
+        #region GameStatus Status
+
+        private GameStatus _gameStatus = GameStatus.GameOn;
+        public GameStatus Status
+        {
+            get => _gameStatus;
+            set => Set(ref _gameStatus, value);
+        }
+
+        #endregion
 
         #endregion
 
         #region Commands
 
-        public ICommand CloseApplicationCommand { get; }
-		private void OnCloseApplicationCommandExecute(object p) => Application.Current.Shutdown();
+        #region NewGameCommand
 
-		public ICommand NewGameCommand { get; }
-		private void OnNewGameCommandExecute(object p) => Board = new(Board.Size);
+        public ICommand NewGameCommand { get; }
+		private void OnNewGameCommandExecute(object p)
+        {
+            Board = new(Board.Size);
+            Status = GameStatus.GameOn;
+        }
+
+        #endregion
+
+        #region ChangeGameBoardSizeCommand
 
         public ICommand ChangeGameBoardSizeCommand { get; }
         private void OnChangeGameBoardSizeCommandExecute(object p) => 
             NewGameCommand.Execute(Board.Size = Convert.ToInt32(p));
+
+        #endregion
+
+        #region ChangeGameModeCommand
 
         public ICommand ChangeGameModeCommand { get; }
         private void OnChangeGameModeCommandExecute(object p)
@@ -79,6 +115,10 @@ namespace TicTacToe.ViewModels
             NewGameCommand.Execute(_gameMode = (GameMode)Convert.ToInt32(p));
         }
 
+        #endregion
+
+        #region GameBoardClickCommand
+
         public ICommand GameBoardClickCommand { get; }
         private void OnGameBoardClickCommandExecute(object p)
         {
@@ -89,8 +129,8 @@ namespace TicTacToe.ViewModels
                 if (_gameMode == GameMode.Player)
                     _turn = _turn == CellState.Cross ? CellState.Zero : CellState.Cross;
 
-                if (_gameMode == GameMode.EasyBot || _gameMode == GameMode.MediumBot || _gameMode == GameMode.HardBot)
-                    ResultChecker.Bot(Board.Cells, Board.Size, CellState.Zero, Depth);
+                if (_gameMode == GameMode.EasyBot || _gameMode == GameMode.HardBot)
+                    MinimaxBot.Bot(Board.Cells, Board.Size, CellState.Zero, Depth);
 
                 CheckWin();
             }
@@ -101,14 +141,7 @@ namespace TicTacToe.ViewModels
 
         #endregion
 
-        private GameBoard _gameBoard = new(3);
-		public GameBoard Board
-		{
-			get => _gameBoard;
-			set => Set(ref _gameBoard, value);
-		}
-
-        public int Depth { get; set; }
+        #endregion
 
         private void CheckWin()
         {
@@ -116,7 +149,7 @@ namespace TicTacToe.ViewModels
 
             if (win != CellState.NotPressed)
             {
-                IsGameOn = false;
+                Status = GameStatus.GameOff;
 
                 if (win == CellState.Empty)
                     _dialog.ShowInformation("Toe...");
@@ -133,11 +166,14 @@ namespace TicTacToe.ViewModels
 
         public MainWindowViewModel()
 		{
-            CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecute);
+            #region Commands
+
 			NewGameCommand = new LambdaCommand(OnNewGameCommandExecute);
             GameBoardClickCommand = new LambdaCommand(OnGameBoardClickCommandExecute, CanGameBoardClickCommandExecuted);
             ChangeGameBoardSizeCommand = new LambdaCommand(OnChangeGameBoardSizeCommandExecute);
             ChangeGameModeCommand = new LambdaCommand(OnChangeGameModeCommandExecute);
+
+            #endregion
         }
     }
 }

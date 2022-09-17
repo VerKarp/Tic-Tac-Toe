@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TicTacToe.ViewModels"
-        xmlns:model="clr-namespace:TicTacToe.Models"
+        xmlns:converter="clr-namespace:TicTacToe.Infrastructure.Converters"
+        xmlns:command="clr-namespace:TicTacToe.Infrastructure.Commands"
         xmlns:local="clr-namespace:TicTacToe"
         Title="{Binding Title}" Height="450" Width="400"
         WindowStartupLocation="CenterScreen"
@@ -12,8 +13,12 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <converter:GameStatusToBoolConverter x:Key="GameStatusConverter"/>
+        <command:CloseApplicationCommand x:Key="CloseAppCommand"/>
+    </Window.Resources>
     <Window.InputBindings>
-        <KeyBinding Key="Esc" Command="{Binding CloseApplicationCommand}"/>
+        <KeyBinding Key="Esc" Command="{StaticResource CloseAppCommand}"/>
     </Window.InputBindings>
 
     <Grid>
@@ -35,20 +40,17 @@
                           CommandParameter="0"/>
                 <MenuItem Header="Easy Bot" Command="{Binding ChangeGameModeCommand}"
                           CommandParameter="1"/>
-                <MenuItem Header="Medium Bot" Command="{Binding ChangeGameModeCommand}"
-                          CommandParameter="2"/>
                 <MenuItem Header="Hard Bot" Command="{Binding ChangeGameModeCommand}"
-                          CommandParameter="3"/>
+                          CommandParameter="2"/>
             </MenuItem>
         </Menu>
 
-        <ItemsControl Grid.Row="1" DataContext="{Binding Board}"
-                      ItemsSource="{Binding Cells}"
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Board.Cells}"
                       HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="False"
-                      Margin="10">
+                      Margin="10"
+                      IsEnabled="{Binding Status, Converter={StaticResource GameStatusConverter}}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-
                     <ItemsControl ItemsSource="{Binding}" Focusable="False">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -58,65 +60,62 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-
                                 <Button Command="{Binding DataContext.GameBoardClickCommand,
                         RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="BorderBrush" Value="Black"/>
+                                            <Setter Property="Background" Value="GhostWhite"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="Margin" Value="2"/>
+                                            <Setter Property="Height" Value="110"/>
+                                            <Setter Property="Width" Value="110"/>
 
-                                        <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Setter Property="BorderBrush" Value="Black"/>
-                                                <Setter Property="Background" Value="GhostWhite"/>
-                                                <Setter Property="BorderThickness" Value="1"/>
-                                                <Setter Property="Margin" Value="2"/>
-                                                <Setter Property="Height" Value="110"/>
-                                                <Setter Property="Width" Value="110"/>
-
-                                                <Style.Triggers>
+                                            <Style.Triggers>
 
                                                 <DataTrigger Binding="{Binding Winner}" Value="true">
-                                                        <Setter Property="Background" Value="Green"/>
-                                                    </DataTrigger>
+                                                    <Setter Property="Background" Value="Green"/>
+                                                </DataTrigger>
 
                                                 <DataTrigger Binding="{Binding State}" Value="Cross">
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="Button">
-                                                                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border BorderBrush="{TemplateBinding BorderBrush}"
                                                             BorderThickness="{TemplateBinding BorderThickness}" 
                                                             Background="{TemplateBinding Background}"
                                                             Margin="{TemplateBinding Margin}">
-                                                                        <Path Data="{StaticResource CrossGeo}" 
+                                                                    <Path Data="{StaticResource CrossGeo}" 
                                                               Stroke="Black" 
                                                               Stretch="Uniform" StrokeThickness="3"/>
-                                                                    </Border>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </DataTrigger>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
 
-                                                    <DataTrigger Binding="{Binding State}" Value="Zero">
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="Button">
-                                                                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                <DataTrigger Binding="{Binding State}" Value="Zero">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border BorderBrush="{TemplateBinding BorderBrush}"
                                                             BorderThickness="{TemplateBinding BorderThickness}" 
                                                             Background="{TemplateBinding Background}"
                                                             Margin="{TemplateBinding Margin}">
-                                                                        <Path Data="{StaticResource NoughtGeo}" 
+                                                                    <Path Data="{StaticResource NoughtGeo}" 
                                                               Stroke="Black"
                                                               Stretch="Uniform" StrokeThickness="3"/>
-                                                                    </Border>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </DataTrigger>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
 
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
-
-                                    </Button>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
 

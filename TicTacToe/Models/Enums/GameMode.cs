@@ -4,7 +4,6 @@
     {
         Player,
         EasyBot,
-        MediumBot,
         HardBot
     }
 }

@@ -57,7 +57,7 @@ namespace TicTacToe.Models
             else return 0;
         }
 
-        internal static float Minimax(List<List<Cell>> cells, int size, CellState state, int depth)
+        private static float Minimax(List<List<Cell>> cells, int size, CellState state, int depth)
         {
             List<List<Cell>> board = CloneBoard(cells, size);
 
@@ -114,6 +114,13 @@ namespace TicTacToe.Models
                 return true;
 
             return false;
+        }
+
+        public static void Bot(List<List<Cell>> cells, int size, CellState state, int depth)
+        {
+            _ = MinimaxBot.Minimax(cells, size, state, depth);
+
+            cells[MinimaxBot.X][MinimaxBot.Y].State = CellState.Zero;
         }
     }
 }

@@ -3,7 +3,7 @@
     internal enum GameStatus
     {
         TicWon,
-        TieWon,
+        TacWon,
         Toe,
         GameOn,
         GameOff
