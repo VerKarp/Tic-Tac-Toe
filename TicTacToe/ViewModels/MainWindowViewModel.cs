@@ -130,7 +130,7 @@ namespace TicTacToe.ViewModels
                     _turn = _turn == CellState.Cross ? CellState.Zero : CellState.Cross;
 
                 if (_gameMode == GameMode.EasyBot || _gameMode == GameMode.HardBot)
-                    MinimaxBot.Bot(Board.Cells, Board.Size, CellState.Zero, Depth);
+                    MinimaxBot.Bot(Board, CellState.Zero, Depth);
 
                 CheckWin();
             }

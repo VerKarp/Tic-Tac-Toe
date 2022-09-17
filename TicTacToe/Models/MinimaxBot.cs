@@ -6,39 +6,39 @@ namespace TicTacToe.Models
 {
     internal static class MinimaxBot
     {
-        public static int X { get; set; }
-        public static int Y { get; set; }
+        private static int X { get; set; }
+        private static int Y { get; set; }
 
-        private static List<List<Cell>> CloneBoard(List<List<Cell>> board, int size)
+        private static GameBoard CloneBoard(GameBoard board)
         {
             List<List<Cell>> clone = new();
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < board.Size; i++)
             {
                 List<Cell> row = new();
 
-                for (int j = 0; j < size; j++)
+                for (int j = 0; j < board.Size; j++)
                     row.Add(new Cell());
 
                 clone.Add(row);
             }
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < board.Size; i++)
             {
-                for (int j = 0; j < size; j++)
+                for (int j = 0; j < board.Size; j++)
                 {
-                    clone[i][j].State = board[i][j].State;
+                    clone[i][j].State = board.Cells[i][j].State;
                 }
             }
 
-            return clone;
+            return new GameBoard() { Cells = clone, Size = board.Size };
         }
 
-        private static List<List<Cell>> MakeBoardMove(List<List<Cell>> board, CellState state, int x, int y)
+        private static GameBoard MakeBoardMove(GameBoard board, CellState state, int x, int y)
         {
-            List<List<Cell>> newBoard = board;
+            List<List<Cell>> newBoard = board.Cells;
             newBoard[x][y].State = state;
-            return newBoard;
+            return new GameBoard() { Cells = newBoard, Size = board.Size};
         }
 
         private static CellState SwitchState(CellState state)
@@ -47,38 +47,37 @@ namespace TicTacToe.Models
             else return CellState.Cross;
         }
 
-        private static int CheckScore(List<List<Cell>> cells, int size, CellState state)
+        private static int CheckScore(GameBoard board, CellState state)
         {
-            if (ResultChecker.CheckWin(new GameBoard(){ Cells = cells, Size = size }) == state) return 1;
+            if (ResultChecker.CheckWin(board) == state) return 1;
 
-            else if (ResultChecker.CheckWin(new GameBoard() { Cells = cells, Size = size }) 
-                == SwitchState(state)) return -1;
+            else if (ResultChecker.CheckWin(board) == SwitchState(state)) return -1;
 
             else return 0;
         }
 
-        private static float Minimax(List<List<Cell>> cells, int size, CellState state, int depth)
+        private static float Minimax(GameBoard gameBoard, CellState state, int depth)
         {
-            List<List<Cell>> board = CloneBoard(cells, size);
+            GameBoard board = CloneBoard(gameBoard);
 
-            if (CheckScore(board, size, CellState.Zero) != 0)
-                return CheckScore(board, size, CellState.Zero);
-            else if (TieWin(board, size) || depth == 0) return 0;
+            if (CheckScore(board, CellState.Zero) != 0)
+                return CheckScore(board, CellState.Zero);
+            else if (TieWin(board) || depth == 0) return 0;
 
             List<float> scores = new();
             List<int> x = new();
             List<int> y = new();
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < gameBoard.Size; i++)
             {
-                for (int j = 0; j < size; j++)
+                for (int j = 0; j < gameBoard.Size; j++)
                 {
-                    if (board[i][j].State == CellState.NotPressed)
+                    if (board.Cells[i][j].State == CellState.NotPressed)
                     {
-                        scores.Add(Minimax(MakeBoardMove(board, state, i, j), size, SwitchState(state), depth - 1));
+                        scores.Add(Minimax(MakeBoardMove(board, state, i, j), SwitchState(state), depth - 1));
                         x.Add(i);
                         y.Add(j);
-                        board[i][j].State = CellState.NotPressed;
+                        board.Cells[i][j].State = CellState.NotPressed;
                     }
 
                 }
@@ -101,26 +100,26 @@ namespace TicTacToe.Models
             }
         }
 
-        private static bool TieWin(List<List<Cell>> cells, int size)
+        private static bool TieWin(GameBoard board)
         {
             int count = 0;
 
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
-                    if (cells[i][j].State != CellState.NotPressed)
+            for (int i = 0; i < board.Size; i++)
+                for (int j = 0; j < board.Size; j++)
+                    if (board.Cells[i][j].State != CellState.NotPressed)
                         count++;
 
-            if (count == size * size)
+            if (count == board.Size * board.Size)
                 return true;
 
             return false;
         }
 
-        public static void Bot(List<List<Cell>> cells, int size, CellState state, int depth)
+        public static void Bot(GameBoard board, CellState state, int depth)
         {
-            _ = MinimaxBot.Minimax(cells, size, state, depth);
+            _ = MinimaxBot.Minimax(board, state, depth);
 
-            cells[MinimaxBot.X][MinimaxBot.Y].State = CellState.Zero;
+            board.Cells[MinimaxBot.X][MinimaxBot.Y].State = CellState.Zero;
         }
     }
 }
