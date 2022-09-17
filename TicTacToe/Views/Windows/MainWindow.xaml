@@ -4,126 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TicTacToe.ViewModels"
-        xmlns:converter="clr-namespace:TicTacToe.Infrastructure.Converters"
         xmlns:command="clr-namespace:TicTacToe.Infrastructure.Commands"
         xmlns:local="clr-namespace:TicTacToe"
+        xmlns:view="clr-namespace:TicTacToe.Views"
         Title="{Binding Title}" Height="450" Width="400"
         WindowStartupLocation="CenterScreen"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        ResizeMode="CanMinimize">
+    
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+    
     <Window.Resources>
-        <converter:GameStatusToBoolConverter x:Key="GameStatusConverter"/>
         <command:CloseApplicationCommand x:Key="CloseAppCommand"/>
     </Window.Resources>
+    
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{StaticResource CloseAppCommand}"/>
     </Window.InputBindings>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="11*"/>
-        </Grid.RowDefinitions>
-
-        <Menu FontSize="18">
-            <MenuItem Header="New game" Command="{Binding NewGameCommand}"/>
-            <MenuItem Header="Size">
-                <MenuItem Header="3X3" Command="{Binding ChangeGameBoardSizeCommand}"
-                          CommandParameter="3"/>
-                <MenuItem Header="4X4" Command="{Binding ChangeGameBoardSizeCommand}"
-                          CommandParameter="4"/>
-            </MenuItem>
-            <MenuItem Header="Game mode">
-                <MenuItem Header="Person" Command="{Binding ChangeGameModeCommand}"
-                          CommandParameter="0"/>
-                <MenuItem Header="Easy Bot" Command="{Binding ChangeGameModeCommand}"
-                          CommandParameter="1"/>
-                <MenuItem Header="Hard Bot" Command="{Binding ChangeGameModeCommand}"
-                          CommandParameter="2"/>
-            </MenuItem>
-        </Menu>
-
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding Board.Cells}"
-                      HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="False"
-                      Margin="10"
-                      IsEnabled="{Binding Status, Converter={StaticResource GameStatusConverter}}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <ItemsControl ItemsSource="{Binding}" Focusable="False">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button Command="{Binding DataContext.GameBoardClickCommand,
-                        RelativeSource={RelativeSource AncestorType=Window}}"
-                            CommandParameter="{Binding}">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="BorderBrush" Value="Black"/>
-                                            <Setter Property="Background" Value="GhostWhite"/>
-                                            <Setter Property="BorderThickness" Value="1"/>
-                                            <Setter Property="Margin" Value="2"/>
-                                            <Setter Property="Height" Value="110"/>
-                                            <Setter Property="Width" Value="110"/>
-
-                                            <Style.Triggers>
-
-                                                <DataTrigger Binding="{Binding Winner}" Value="true">
-                                                    <Setter Property="Background" Value="Green"/>
-                                                </DataTrigger>
-
-                                                <DataTrigger Binding="{Binding State}" Value="Cross">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="Button">
-                                                                <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                                            BorderThickness="{TemplateBinding BorderThickness}" 
-                                                            Background="{TemplateBinding Background}"
-                                                            Margin="{TemplateBinding Margin}">
-                                                                    <Path Data="{StaticResource CrossGeo}" 
-                                                              Stroke="Black" 
-                                                              Stretch="Uniform" StrokeThickness="3"/>
-                                                                </Border>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </DataTrigger>
-
-                                                <DataTrigger Binding="{Binding State}" Value="Zero">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="Button">
-                                                                <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                                            BorderThickness="{TemplateBinding BorderThickness}" 
-                                                            Background="{TemplateBinding Background}"
-                                                            Margin="{TemplateBinding Margin}">
-                                                                    <Path Data="{StaticResource NoughtGeo}" 
-                                                              Stroke="Black"
-                                                              Stretch="Uniform" StrokeThickness="3"/>
-                                                                </Border>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </DataTrigger>
-
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-
-                    </ItemsControl>
-                    
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        
+        <view:GameFieldView
+            DataContext="{Binding GameFieldViewModel}"/>
     </Grid>
 </Window>
