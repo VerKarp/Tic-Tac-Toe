@@ -146,17 +146,26 @@ namespace TicTacToe.ViewModels
 
             if (win != CellState.NotPressed)
             {
+                switch (win)
+                {
+                    case CellState.Zero:
+                        _dialog.ShowInformation("TAC!", "Game result");
+                        Status = GameStatus.TacWon;
+                        break;
+                    case CellState.Cross:
+                        _dialog.ShowInformation("TIC!", "Game result");
+                        Status = GameStatus.TicWon;
+                        break;
+                    case CellState.Empty:
+                        _dialog.ShowInformation("Toe...", "Game result");
+                        Status = GameStatus.Toe;
+                        break;
+                    default:
+                        Status = GameStatus.GameOff;
+                        break;
+                }
+
                 Status = GameStatus.GameOff;
-
-                if (win == CellState.Empty)
-                    _dialog.ShowInformation("Toe...", "Game result");
-
-                if (win == CellState.Cross)
-                    _dialog.ShowInformation("TIC!", "Game result");
-
-                if (win == CellState.Zero)
-                    _dialog.ShowInformation("TAC!", "Game result");
-
                 _turn = CellState.Cross;
             }
         }

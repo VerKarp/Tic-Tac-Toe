@@ -6,8 +6,8 @@ namespace TicTacToe.Models
 {
     internal static class MinimaxBot
     {
-        private static int X { get; set; }
-        private static int Y { get; set; }
+        private static int X;
+        private static int Y;
 
         private static GameBoard CloneBoard(GameBoard board)
         {
@@ -56,6 +56,21 @@ namespace TicTacToe.Models
             else return 0;
         }
 
+        private static bool TieWin(GameBoard board)
+        {
+            int count = 0;
+
+            for (int i = 0; i < board.Size; i++)
+                for (int j = 0; j < board.Size; j++)
+                    if (board.Cells[i][j].State != CellState.NotPressed)
+                        count++;
+
+            if (count == board.Size * board.Size)
+                return true;
+
+            return false;
+        }
+
         private static float Minimax(GameBoard gameBoard, CellState state, int depth)
         {
             GameBoard board = CloneBoard(gameBoard);
@@ -100,26 +115,11 @@ namespace TicTacToe.Models
             }
         }
 
-        private static bool TieWin(GameBoard board)
-        {
-            int count = 0;
-
-            for (int i = 0; i < board.Size; i++)
-                for (int j = 0; j < board.Size; j++)
-                    if (board.Cells[i][j].State != CellState.NotPressed)
-                        count++;
-
-            if (count == board.Size * board.Size)
-                return true;
-
-            return false;
-        }
-
         public static void Bot(GameBoard board, CellState state, int depth)
         {
-            _ = MinimaxBot.Minimax(board, state, depth);
+            _ = Minimax(board, state, depth);
 
-            board.Cells[MinimaxBot.X][MinimaxBot.Y].State = CellState.Zero;
+            board.Cells[X][Y].State = CellState.Zero;
         }
     }
 }
