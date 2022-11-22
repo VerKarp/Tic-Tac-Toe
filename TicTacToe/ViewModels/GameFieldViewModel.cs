@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using TicTacToe.Models.Enums;
 using TicTacToe.Models;
-using TicTacToe.Services;
 using TicTacToe.Infrastructure.Commands;
 using TicTacToe.ViewModels.Base;
 using TicTacToe.Services.Interfaces;
