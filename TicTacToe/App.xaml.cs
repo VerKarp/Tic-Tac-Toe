@@ -4,6 +4,9 @@ using System.Windows;
 using TicTacToe.Services.Interfaces;
 using TicTacToe.Services;
 using TicTacToe.Views.Windows;
+using TicTacToe.Stores;
+using TicTacToe.ViewModels;
+using System;
 
 namespace TicTacToe
 {
@@ -16,8 +19,24 @@ namespace TicTacToe
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddSingleton<MainWindow>();
+                    services.AddSingleton<NavigationStore>();
                     services.AddTransient<IWindowDialogService, WindowDialogService>();
+
+                    services.AddSingleton<INavigationService>(s =>
+                        new NavigationService<GameFieldViewModel>(s.GetRequiredService<NavigationStore>(),
+                            () => new GameFieldViewModel(s.GetRequiredService<IWindowDialogService>())));
+
+                    services.AddTransient<GameFieldViewModel>(s => 
+                        new(s.GetRequiredService<WindowDialogService>()));
+
+                    services.AddTransient<AuthorizationViewModel>(s => new());
+
+                    services.AddSingleton<MainWindowViewModel>();
+                    services.AddSingleton<MainWindow>(s => new()
+                    {
+                        DataContext = s.GetRequiredService<MainWindowViewModel>()
+                    });
+
                 })
                 .Build();
         }
@@ -25,8 +44,10 @@ namespace TicTacToe
         protected override async void OnStartup(StartupEventArgs e)
         {
             await AppHost!.StartAsync();
-            var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
-            startupForm.Show();
+
+            AppHost.Services.GetRequiredService<INavigationService>().Navigate();
+            MainWindow = AppHost.Services.GetRequiredService<MainWindow>();
+            MainWindow.Show();
 
             base.OnStartup(e);
         }
