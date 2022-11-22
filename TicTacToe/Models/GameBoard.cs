@@ -2,7 +2,7 @@
 
 namespace TicTacToe.Models
 {
-    internal class GameBoard
+    public class GameBoard
     {
         public List<List<Cell>> Cells { get; set; }
 

@@ -3,7 +3,7 @@ using TicTacToe.ViewModels.Base;
 
 namespace TicTacToe.Models
 {
-    internal class Cell : ViewModel
+    public class Cell : ViewModel
     {
         private CellState _state;
         public CellState State 

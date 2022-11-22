@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe.Models.Enums
 {
-    internal enum CellState
+    public enum CellState
     {
         Zero,
         Cross,

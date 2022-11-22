@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe.Models.Enums
 {
-    internal enum GameStatus
+    public enum GameStatus
     {
         TicWon,
         TacWon,

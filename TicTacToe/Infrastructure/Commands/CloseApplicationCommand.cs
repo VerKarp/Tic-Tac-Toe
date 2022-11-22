@@ -3,7 +3,7 @@ using TicTacToe.Infrastructure.Commands.Base;
 
 namespace TicTacToe.Infrastructure.Commands
 {
-    internal class CloseApplicationCommand : Command
+    public class CloseApplicationCommand : Command
     {
         public override bool CanExecute(object? parameter) => true;
 

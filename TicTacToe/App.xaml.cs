@@ -6,7 +6,6 @@ using TicTacToe.Services;
 using TicTacToe.Views.Windows;
 using TicTacToe.Stores;
 using TicTacToe.ViewModels;
-using System;
 
 namespace TicTacToe
 {

@@ -3,7 +3,7 @@ using TicTacToe.Infrastructure.Commands.Base;
 
 namespace TicTacToe.Infrastructure.Commands
 {
-    internal class LambdaCommand : Command
+    public class LambdaCommand : Command
     {
         private readonly Action<object> execute;
         private readonly Func<object, bool>? canExecute;

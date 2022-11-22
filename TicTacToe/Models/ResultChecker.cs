@@ -2,7 +2,7 @@
 
 namespace TicTacToe.Models
 {
-    internal static class ResultChecker
+    public static class ResultChecker
     {
         private static GameBoard gameBoard;
         private static CellState WinnerState;

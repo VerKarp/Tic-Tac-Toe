@@ -3,7 +3,7 @@ using TicTacToe.Services.Interfaces;
 
 namespace TicTacToe.Services
 {
-    internal class WindowDialogService : IWindowDialogService
+    public class WindowDialogService : IWindowDialogService
     {
         public void ShowInformation(string Information, string Caption = "Game result") =>
             MessageBox.Show(

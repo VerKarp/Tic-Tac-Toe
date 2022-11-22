@@ -4,7 +4,7 @@ using TicTacToe.Models.Enums;
 
 namespace TicTacToe.Models
 {
-    internal static class MinimaxBot
+    public static class MinimaxBot
     {
         private static int X;
         private static int Y;

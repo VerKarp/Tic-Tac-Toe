@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe.Models.Enums
 {
-    internal enum GameMode
+    public enum GameMode
     {
         Player,
         EasyBot,

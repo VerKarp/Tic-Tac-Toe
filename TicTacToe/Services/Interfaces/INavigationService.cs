@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe.Services.Interfaces
 {
-    interface INavigationService
+    public interface INavigationService
     {
         public void Navigate();
     }

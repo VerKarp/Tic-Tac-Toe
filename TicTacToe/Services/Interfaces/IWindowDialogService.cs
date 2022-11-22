@@ -1,7 +1,7 @@
 ﻿namespace TicTacToe.Services.Interfaces
 {
-    internal interface IWindowDialogService
+    public interface IWindowDialogService
     {
-        void ShowInformation(string Information, string Caption);
+        public void ShowInformation(string Information, string Caption);
     }
 }
