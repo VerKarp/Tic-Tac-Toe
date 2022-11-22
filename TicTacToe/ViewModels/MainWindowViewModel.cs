@@ -3,7 +3,7 @@ using TicTacToe.ViewModels.Base;
 
 namespace TicTacToe.ViewModels
 {
-    internal class MainWindowViewModel : ViewModel
+    public class MainWindowViewModel : ViewModel
     {
         private readonly NavigationStore _navigationStore;
 

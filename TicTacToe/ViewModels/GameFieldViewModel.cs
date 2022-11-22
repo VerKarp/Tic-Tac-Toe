@@ -8,7 +8,7 @@ using TicTacToe.Services.Interfaces;
 
 namespace TicTacToe.ViewModels
 {
-    internal class GameFieldViewModel : ViewModel
+    public class GameFieldViewModel : ViewModel
     {
         #region Fields
 
