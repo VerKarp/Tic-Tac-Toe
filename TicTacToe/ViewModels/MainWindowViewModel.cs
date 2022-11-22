@@ -1,11 +1,12 @@
-﻿using TicTacToe.Services;
-using TicTacToe.Services.Interfaces;
+﻿using TicTacToe.Stores;
 using TicTacToe.ViewModels.Base;
 
 namespace TicTacToe.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        private readonly NavigationStore _navigationStore;
+
         #region Properties
 
         #region Title
@@ -20,14 +21,16 @@ namespace TicTacToe.ViewModels
 
         #endregion
 
-        public GameFieldViewModel GameFieldViewModel { get; set; }
+        public ViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
 
         #endregion
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(NavigationStore navigationStore)
         {
-            IWindowDialogService windowDialogService = new WindowDialogService();
-            GameFieldViewModel = new(windowDialogService);
+            _navigationStore = navigationStore;
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
+
+        private void OnCurrentViewModelChanged() => OnPropertyChanged(nameof(CurrentViewModel));
     }
 }

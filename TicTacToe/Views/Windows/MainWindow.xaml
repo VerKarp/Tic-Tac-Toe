@@ -6,16 +6,12 @@
         xmlns:vm="clr-namespace:TicTacToe.ViewModels"
         xmlns:command="clr-namespace:TicTacToe.Infrastructure.Commands"
         xmlns:local="clr-namespace:TicTacToe"
-        xmlns:view="clr-namespace:TicTacToe.Views"
+        xmlns:views="clr-namespace:TicTacToe.Views" 
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
         Title="{Binding Title}" Height="450" Width="400"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight"
         ResizeMode="CanMinimize">
-    
-    <Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>
-    
     <Window.Resources>
         <command:CloseApplicationCommand x:Key="CloseAppCommand"/>
     </Window.Resources>
@@ -25,7 +21,15 @@
     </Window.InputBindings>
 
     <Grid>
-        <view:GameFieldView
-            DataContext="{Binding GameFieldViewModel}"/>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type vm:GameFieldViewModel}">
+                <views:GameFieldView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:AuthorizationViewModel}">
+                <views:AuthorizationView/>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <ContentControl Content="{Binding CurrentViewModel}"/>
     </Grid>
 </Window>
