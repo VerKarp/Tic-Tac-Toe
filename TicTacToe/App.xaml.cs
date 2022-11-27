@@ -29,6 +29,9 @@ namespace TicTacToe
 
                     services.AddTransient<AuthorizationViewModel>(s => new());
 
+                    services.AddTransient<AboutViewModel>(s => new());
+                    services.AddTransient<SettingsViewModel>(s => new());
+
                     services.AddSingleton<MainWindowViewModel>();
                     services.AddSingleton<MainWindow>(s => new()
                     {
@@ -42,6 +45,18 @@ namespace TicTacToe
         private INavigationService CreateNavigationBarViewModelService() =>
             new NavigationService<NavigationBarViewModel>(
                 AppHost.Services.GetRequiredService<NavigationStore>(),
+                () => CreateNavigationBarViewModel());
+
+        private INavigationService CreateAboutService() =>
+            new LayoutNavigationService<AboutViewModel>(
+                AppHost.Services.GetRequiredService<NavigationStore>(),
+                () => AppHost.Services.GetRequiredService<AboutViewModel>(),
+                () => CreateNavigationBarViewModel());
+
+        private INavigationService CreateSettingsService() =>
+            new LayoutNavigationService<SettingsViewModel>(
+                AppHost.Services.GetRequiredService<NavigationStore>(),
+                () => AppHost.Services.GetRequiredService<SettingsViewModel>(),
                 () => CreateNavigationBarViewModel());
 
         private INavigationService CreateGameFieldViewModelService() =>
@@ -59,7 +74,9 @@ namespace TicTacToe
         private NavigationBarViewModel CreateNavigationBarViewModel() =>
             new NavigationBarViewModel(
                 CreateGameFieldViewModelService(),
-                CreateAuthorizationViewModelService());
+                CreateAuthorizationViewModelService(),
+                CreateAboutService(),
+                CreateSettingsService());
 
         private GameFieldViewModel CreateGameFieldViewModel() =>
             new GameFieldViewModel(AppHost.Services.GetRequiredService<IWindowDialogService>());
