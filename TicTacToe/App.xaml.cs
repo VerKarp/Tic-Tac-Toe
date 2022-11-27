@@ -18,7 +18,11 @@ namespace TicTacToe
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddSingleton<NavigationStore>();
+                    services.AddSingleton<NavigationStore>(s => new()
+                    {
+                        CurrentViewModel = s.GetRequiredService<LayoutViewModel>()
+                    });
+
                     services.AddTransient<IWindowDialogService, WindowDialogService>();
 
                     services.AddSingleton<INavigationService>(s =>
@@ -30,6 +34,11 @@ namespace TicTacToe
 
                     services.AddTransient<AuthorizationViewModel>(s => new());
 
+                    services.AddTransient<NavigationBarViewModel>(s => new());
+
+                    services.AddTransient<LayoutViewModel>(s => new(s.GetRequiredService<AuthorizationViewModel>(),
+                        s.GetRequiredService<NavigationBarViewModel>()));
+
                     services.AddSingleton<MainWindowViewModel>();
                     services.AddSingleton<MainWindow>(s => new()
                     {
@@ -39,6 +48,16 @@ namespace TicTacToe
                 })
                 .Build();
         }
+
+        private INavigationService CreateLayoutViewModelService() => 
+            new NavigationService<LayoutViewModel>(
+                AppHost.Services.GetRequiredService<NavigationStore>(),
+                () => CreateLayoutViewModel());
+
+        private LayoutViewModel CreateLayoutViewModel() =>
+            new LayoutViewModel(
+                AppHost.Services.GetRequiredService<AuthorizationViewModel>(),
+                AppHost.Services.GetRequiredService<NavigationBarViewModel>());
 
         protected override async void OnStartup(StartupEventArgs e)
         {
