@@ -18,26 +18,16 @@ namespace TicTacToe
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddSingleton<NavigationStore>(s => new()
-                    {
-                        CurrentViewModel = s.GetRequiredService<LayoutViewModel>()
-                    });
+                    services.AddSingleton<NavigationStore>(s => new());
 
                     services.AddTransient<IWindowDialogService, WindowDialogService>();
 
-                    services.AddSingleton<INavigationService>(s =>
-                        new NavigationService<GameFieldViewModel>(s.GetRequiredService<NavigationStore>(),
-                            () => new GameFieldViewModel(s.GetRequiredService<IWindowDialogService>())));
+                    services.AddSingleton<INavigationService>(s => CreateGameFieldViewModelService());
 
                     services.AddTransient<GameFieldViewModel>(s => 
                         new(s.GetRequiredService<WindowDialogService>()));
 
                     services.AddTransient<AuthorizationViewModel>(s => new());
-
-                    services.AddTransient<NavigationBarViewModel>(s => new());
-
-                    services.AddTransient<LayoutViewModel>(s => new(s.GetRequiredService<AuthorizationViewModel>(),
-                        s.GetRequiredService<NavigationBarViewModel>()));
 
                     services.AddSingleton<MainWindowViewModel>();
                     services.AddSingleton<MainWindow>(s => new()
@@ -49,15 +39,30 @@ namespace TicTacToe
                 .Build();
         }
 
-        private INavigationService CreateLayoutViewModelService() => 
-            new NavigationService<LayoutViewModel>(
+        private INavigationService CreateNavigationBarViewModelService() =>
+            new NavigationService<NavigationBarViewModel>(
                 AppHost.Services.GetRequiredService<NavigationStore>(),
-                () => CreateLayoutViewModel());
+                () => CreateNavigationBarViewModel());
 
-        private LayoutViewModel CreateLayoutViewModel() =>
-            new LayoutViewModel(
-                AppHost.Services.GetRequiredService<AuthorizationViewModel>(),
-                AppHost.Services.GetRequiredService<NavigationBarViewModel>());
+        private INavigationService CreateGameFieldViewModelService() =>
+            new LayoutNavigationService<GameFieldViewModel>(
+                AppHost.Services.GetRequiredService<NavigationStore>(),
+                () => CreateGameFieldViewModel(),
+                () => CreateNavigationBarViewModel());
+
+        private INavigationService CreateAuthorizationViewModelService() =>
+            new LayoutNavigationService<AuthorizationViewModel>(
+                AppHost.Services.GetRequiredService<NavigationStore>(),
+                () => new AuthorizationViewModel(),
+                () => CreateNavigationBarViewModel());
+
+        private NavigationBarViewModel CreateNavigationBarViewModel() =>
+            new NavigationBarViewModel(
+                CreateGameFieldViewModelService(),
+                CreateAuthorizationViewModelService());
+
+        private GameFieldViewModel CreateGameFieldViewModel() =>
+            new GameFieldViewModel(AppHost.Services.GetRequiredService<IWindowDialogService>());
 
         protected override async void OnStartup(StartupEventArgs e)
         {
