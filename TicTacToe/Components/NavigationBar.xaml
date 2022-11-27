@@ -3,15 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TicTacToe.Components"
+             xmlns:local="clr-namespace:TicTacToe.Components" 
+             xmlns:viewmodels="clr-namespace:TicTacToe.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:NavigationBarViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="400">
     <Grid>
         <StackPanel Orientation="Horizontal">
-            <Button Content="Game" Command="{Binding }"/>
-            <Button Content="Login"/>
-            <Button Content="Settings"/>
-            <Button Content="About"/>
+            <Button Content="Game" Command="{Binding GameNavigateCommand}"/>
+            <Button Content="Login" Command="{Binding AuthorizationNavigateCommand}"/>
+            <Button Content="Settings" Command="{Binding SettingsNavigateCommand}"/>
+            <Button Content="About" Command="{Binding AboutNavigateCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>
