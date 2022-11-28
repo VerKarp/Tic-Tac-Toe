@@ -6,13 +6,19 @@
              xmlns:local="clr-namespace:TicTacToe.Components" 
              xmlns:viewmodels="clr-namespace:TicTacToe.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:NavigationBarViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="60" d:DesignWidth="400">
+             d:DesignHeight="40" d:DesignWidth="400">
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Game" Command="{Binding GameNavigateCommand}"/>
-            <Button Content="Login" Command="{Binding AuthorizationNavigateCommand}"/>
-            <Button Content="Settings" Command="{Binding SettingsNavigateCommand}"/>
-            <Button Content="About" Command="{Binding AboutNavigateCommand}"/>
-        </StackPanel>
+        <Grid.Resources>
+            <Style TargetType="MenuItem">
+                <Setter Property="Margin" Value="20 0 0 0"/>
+            </Style>
+        </Grid.Resources>
+        
+        <Menu FontSize="18" Padding="0 4">
+            <MenuItem Header="Game" Command="{Binding GameNavigateCommand}"/>
+            <MenuItem Header="Login" Command="{Binding AuthorizationNavigateCommand}"/>
+            <MenuItem Header="Settings" Command="{Binding SettingsNavigateCommand}"/>
+            <MenuItem Header="About" Command="{Binding AboutNavigateCommand}"/>
+        </Menu>
     </Grid>
 </UserControl>

@@ -15,29 +15,17 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="11*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Menu FontSize="18">
-            <MenuItem Header="New game" Command="{Binding NewGameCommand}"/>
-            <MenuItem Header="Size">
-                <MenuItem Header="3X3" Command="{Binding ChangeGameBoardSizeCommand}"
-                          CommandParameter="3"/>
-                <MenuItem Header="4X4" Command="{Binding ChangeGameBoardSizeCommand}"
-                          CommandParameter="4"/>
-            </MenuItem>
-            <MenuItem Header="Game mode">
-                <MenuItem Header="Person" Command="{Binding ChangeGameModeCommand}"
-                          CommandParameter="0"/>
-                <MenuItem Header="Easy Bot" Command="{Binding ChangeGameModeCommand}"
-                          CommandParameter="1"/>
-                <MenuItem Header="Hard Bot" Command="{Binding ChangeGameModeCommand}"
-                          CommandParameter="2"/>
-            </MenuItem>
-        </Menu>
+        <Grid.Resources>
+            <Style TargetType="MenuItem">
+                <Setter Property="Margin" Value="25 0 0 0"/>
+            </Style>
+        </Grid.Resources>
 
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding Board.Cells}"
+        <ItemsControl ItemsSource="{Binding Board.Cells}"
                       HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="False"
                       Margin="10"
                       IsEnabled="{Binding Status, Converter={StaticResource GameStatusConverter}}">
@@ -116,5 +104,23 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
+        <Menu FontSize="18" Grid.Row="1" Padding="0 4" Margin="0 0 0 10">
+            <MenuItem Header="New game" Command="{Binding NewGameCommand}"/>
+            <MenuItem Header="Size">
+                <MenuItem Header="3X3" Command="{Binding ChangeGameBoardSizeCommand}"
+                          CommandParameter="3"/>
+                <MenuItem Header="4X4" Command="{Binding ChangeGameBoardSizeCommand}"
+                          CommandParameter="4"/>
+            </MenuItem>
+            <MenuItem Header="Game mode">
+                <MenuItem Header="Person" Command="{Binding ChangeGameModeCommand}"
+                          CommandParameter="0"/>
+                <MenuItem Header="Easy Bot" Command="{Binding ChangeGameModeCommand}"
+                          CommandParameter="1"/>
+                <MenuItem Header="Hard Bot" Command="{Binding ChangeGameModeCommand}"
+                          CommandParameter="2"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </UserControl>
