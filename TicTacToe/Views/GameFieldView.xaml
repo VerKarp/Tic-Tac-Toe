@@ -7,6 +7,7 @@
              xmlns:vm="clr-namespace:TicTacToe.ViewModels"
              xmlns:converter="clr-namespace:TicTacToe.Infrastructure.Converters"
              d:DesignHeight="450" d:DesignWidth="400"
+             Width="400"
              d:DataContext="{d:DesignInstance vm:GameFieldViewModel}">
     
     <UserControl.Resources>

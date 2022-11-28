@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:TicTacToe.Components" 
              xmlns:viewmodels="clr-namespace:TicTacToe.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:NavigationBarViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="400">
+             d:DesignHeight="40" d:DesignWidth="400"
+             Width="400" Height="40">
     <Grid>
         <Grid.Resources>
             <Style TargetType="MenuItem">
