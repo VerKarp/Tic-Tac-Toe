@@ -7,8 +7,24 @@
              xmlns:vm="clr-namespace:TicTacToe.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400"
+             Width="400" Height="406"
              d:DataContext="{d:DesignInstance vm:AuthorizationViewModel}">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Margin" Value="40 0"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Margin" Value="40 7"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Background" Value="White"/>
+            </Style>
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="*"/>
