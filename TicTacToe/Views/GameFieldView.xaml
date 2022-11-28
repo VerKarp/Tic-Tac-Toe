@@ -22,7 +22,7 @@
 
         <Grid.Resources>
             <Style TargetType="MenuItem">
-                <Setter Property="Margin" Value="25 0 0 0"/>
+                <Setter Property="Margin" Value="35 0 0 0"/>
             </Style>
         </Grid.Resources>
 
